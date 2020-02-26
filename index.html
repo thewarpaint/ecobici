@@ -13,9 +13,26 @@
       crossorigin="anonymous"
     >
 
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
+      crossorigin="anonymous"
+    >
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
+      crossorigin="anonymous"
+    >
+
     <script
       src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
       integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"
       crossorigin="anonymous"
     ></script>
 
@@ -57,7 +74,19 @@
       fetch('https://thewarpaint.github.io/ecobici/stations.geojson')
         .then((response) => response.json())
         .then((featureCollection) => {
-          L.geoJSON(featureCollection).addTo(map);
+          const markerClusterGroup = L.markerClusterGroup({ chunkedLoading: true });
+
+          featureCollection.features.forEach((feature) => {
+            const coordinates = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+            const marker = L.marker(coordinates, {
+              title: feature.properties.address
+            });
+
+            marker.bindPopup(feature.properties.address);
+            markerClusterGroup.addLayer(marker);
+          });
+
+          map.addLayer(markerClusterGroup);
         });
     </script>
   </body>
