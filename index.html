@@ -93,7 +93,11 @@
       fetchPromise
         .then((response) => response.json())
         .then((data) => {
-          const markerClusterGroup = L.markerClusterGroup({ chunkedLoading: true });
+          const markerClusterGroup = L.markerClusterGroup({
+            chunkedLoading: true,
+            showCoverageOnHover: false,
+          });
+
           const markers = useGeojson
             ? mapFeatureCollection(data)
             : mapEcobiciStations(data);
