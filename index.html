@@ -74,6 +74,10 @@
     <div id="map"></div>
 
     <script>
+      const useLiveData = true;
+      const doAutoReload = true;
+      const reloadInterval = 60 * 1000; // 1 minute
+
       let liveDataMap = {};
       const mexicoCityCoords = [19.402244, -99.173153];
       const map = L.map('map').setView(mexicoCityCoords, 13);
@@ -103,8 +107,6 @@
       // CORS anywhere allows us to proxy the call to get the correct CORS headers
       const ecobiciUrl = 'https://cors-anywhere.herokuapp.com/https://www.ecobici.cdmx.gob.mx/availability_map/getJsonObject';
 
-      const useLiveData = true;
-
       const fetchPromise = useLiveData
         ? fetch(ecobiciUrl, fetchOptions)
         : fetch(geojsonUrl);
@@ -131,6 +133,20 @@
             updateLiveDataMap(data);
           }
         });
+
+      if (useLiveData && doAutoReload) {
+        setInterval(() => {
+          console.info('Fetching live data from Ecobici');
+
+          fetch(ecobiciUrl, fetchOptions)
+            .then((response) => response.json())
+            .then((data) => {
+              console.info(`Live data for ${data.length} stations fetched successfully on ${new Date()}`);
+
+              updateLiveDataMap(data);
+            });
+        }, reloadInterval);
+      }
 
       function mapFeatureCollection(featureCollection) {
         return featureCollection.features.map((feature) => {
