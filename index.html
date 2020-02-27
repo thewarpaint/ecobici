@@ -126,12 +126,17 @@
       function mapEcobiciStations(stations) {
         return stations.map((station) => {
           const coordinates = L.latLng(station.lat, station.lon);
-          const title = `${station.address}, bikes: ${station.bikes}, empty slots: ${station.slots}`;
           const marker = L.marker(coordinates, {
-            title
+            title: station.address
           });
 
-          marker.bindPopup(title);
+          marker.bindPopup(() => {
+            return `
+              <h2>${station.address}</h2>
+              <p>Available bikes: ${station.bikes}</p>
+              <p>Empty slots: ${station.slots}</p>
+            `;
+          });
 
           return marker;
         });
