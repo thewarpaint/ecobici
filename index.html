@@ -102,11 +102,11 @@
       // CORS anywhere allows us to proxy the call to get the correct CORS headers
       const ecobiciUrl = 'https://cors-anywhere.herokuapp.com/https://www.ecobici.cdmx.gob.mx/availability_map/getJsonObject';
 
-      const useGeojson = false;
+      const useLiveData = true;
 
-      const fetchPromise = useGeojson
-        ? fetch(geojsonUrl)
-        : fetch(ecobiciUrl, fetchOptions);
+      const fetchPromise = useLiveData
+        ? fetch(ecobiciUrl, fetchOptions)
+        : fetch(geojsonUrl);
 
       fetchPromise
         .then((response) => response.json())
@@ -116,9 +116,9 @@
             showCoverageOnHover: false,
           });
 
-          const markers = useGeojson
-            ? mapFeatureCollection(data)
-            : mapEcobiciStations(data);
+          const markers = useLiveData
+            ? mapEcobiciStations(data)
+            : mapFeatureCollection(data);
 
           markers.forEach((marker) => {
             markerClusterGroup.addLayer(marker);
