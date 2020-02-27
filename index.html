@@ -71,23 +71,67 @@
         zoomOffset: -1
       }).addTo(map);
 
-      fetch('https://thewarpaint.github.io/ecobici/stations.geojson')
+      const geojsonUrl = 'https://thewarpaint.github.io/ecobici/stations.geojson';
+
+      const fetchOptions = {
+        headers: {
+          'accept': 'application/json',
+          'cache-control': 'no-cache'
+        },
+        method: 'POST'
+      };
+
+      // CORS anywhere allows us to proxy the call to get the correct CORS headers
+      const ecobiciUrl = 'https://cors-anywhere.herokuapp.com/https://www.ecobici.cdmx.gob.mx/availability_map/getJsonObject';
+
+      const useGeojson = false;
+
+      const fetchPromise = useGeojson
+        ? fetch(geojsonUrl)
+        : fetch(ecobiciUrl, fetchOptions);
+
+      fetchPromise
         .then((response) => response.json())
-        .then((featureCollection) => {
+        .then((data) => {
           const markerClusterGroup = L.markerClusterGroup({ chunkedLoading: true });
+          const markers = useGeojson
+            ? mapFeatureCollection(data)
+            : mapEcobiciStations(data);
 
-          featureCollection.features.forEach((feature) => {
-            const coordinates = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
-            const marker = L.marker(coordinates, {
-              title: feature.properties.address
-            });
-
-            marker.bindPopup(feature.properties.address);
+          markers.forEach((marker) => {
             markerClusterGroup.addLayer(marker);
           });
 
           map.addLayer(markerClusterGroup);
         });
+
+      function mapFeatureCollection(featureCollection) {
+        return featureCollection.features.map((feature) => {
+          const coordinates = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+          const title = feature.properties.address;
+          const marker = L.marker(coordinates, {
+            title
+          });
+
+          marker.bindPopup(title);
+
+          return marker;
+        });
+      }
+
+      function mapEcobiciStations(stations) {
+        return stations.map((station) => {
+          const coordinates = L.latLng(station.lat, station.lon);
+          const title = `${station.address}, bikes: ${station.bikes}, empty slots: ${station.slots}`;
+          const marker = L.marker(coordinates, {
+            title
+          });
+
+          marker.bindPopup(title);
+
+          return marker;
+        });
+      }
     </script>
   </body>
 </html>
