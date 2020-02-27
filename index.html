@@ -74,6 +74,7 @@
     <div id="map"></div>
 
     <script>
+      let liveDataMap = {};
       const mexicoCityCoords = [19.402244, -99.173153];
       const map = L.map('map').setView(mexicoCityCoords, 13);
 
@@ -125,6 +126,10 @@
           });
 
           map.addLayer(markerClusterGroup);
+
+          if (useLiveData) {
+            updateLiveDataMap(data);
+          }
         });
 
       function mapFeatureCollection(featureCollection) {
@@ -149,15 +154,29 @@
           });
 
           marker.bindPopup(() => {
+            const stationData = liveDataMap[station.id];
+
             return `
-              <h2>${station.address}</h2>
-              <p>Available bikes: ${station.bikes}</p>
-              <p>Empty slots: ${station.slots}</p>
+              <h2>${stationData.address}</h2>
+              <p>Available bikes: ${stationData.bikes}</p>
+              <p>Empty slots: ${stationData.slots}</p>
             `;
           });
 
           return marker;
         });
+      }
+
+      function updateLiveDataMap(data) {
+        liveDataMap = mapLiveData(data);
+      }
+
+      function mapLiveData(stations) {
+        return stations.reduce((acc, station) => {
+          acc[station.id] = station;
+
+          return acc;
+        }, {});
       }
     </script>
   </body>
