@@ -146,6 +146,7 @@
         .then((data) => {
           const markerClusterGroup = L.markerClusterGroup({
             chunkedLoading: true,
+            disableClusteringAtZoom: 16,
             showCoverageOnHover: false,
           });
 
