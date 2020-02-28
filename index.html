@@ -95,6 +95,21 @@
       const pinnedZoom = 17;
       const pinnedStationIdKey = 'pinned_station_id';
 
+      const BikeIcon = L.Icon.extend({
+        options: {
+          iconSize: [42, 42],
+          iconAnchor: [21, 42],
+          popupAnchor: [0, -42],
+        },
+      });
+
+      const icons = {
+        gray: new BikeIcon({ iconUrl: 'gray.png' }),
+        green: new BikeIcon({ iconUrl: 'green.png' }),
+        red: new BikeIcon({ iconUrl: 'red.png' }),
+        yellow: new BikeIcon({ iconUrl: 'yellow.png' }),
+      };
+
       let liveDataMap = {};
       const mexicoCityCoords = [19.402244, -99.173153];
       const map = L.map('map').setView(mexicoCityCoords, 13);
@@ -188,8 +203,10 @@
       function mapEcobiciStations(stations) {
         return stations.map((station) => {
           const coordinates = L.latLng(station.lat, station.lon);
+
           const marker = L.marker(coordinates, {
-            title: station.address
+            icon: getIcon(station),
+            title: station.address,
           });
 
           marker.bindPopup(() => {
@@ -205,6 +222,22 @@
 
           return marker;
         });
+      }
+
+      function getIcon(stationData) {
+        if (stationData.status === 'CLS') {
+          return icons.gray;
+        }
+
+        if (stationData.bikes > 5) {
+          return icons.green;
+        }
+
+        if (stationData.bikes > 0) {
+          return icons.yellow;
+        }
+
+        return icons.red;
       }
 
       function updateLiveDataMap(data) {
