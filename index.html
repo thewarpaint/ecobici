@@ -64,8 +64,23 @@
       }
 
       .leaflet-popup-content p {
-        margin: .75rem 0;
-        font-size: .75rem;
+        margin: .875rem 0;
+      }
+
+      .leaflet-popup-content p,
+      .leaflet-popup-content button {
+        font-size: .875rem;
+      }
+
+      @media(min-width: 640px) {
+        .leaflet-popup-content p {
+          margin: .75rem 0;
+        }
+
+        .leaflet-popup-content p,
+        .leaflet-popup-content button {
+          font-size: .75rem;
+        }
       }
     </style>
   </head>
