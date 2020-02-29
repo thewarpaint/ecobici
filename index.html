@@ -211,18 +211,22 @@
           });
 
           marker.bindPopup(() => {
-            const stationData = liveDataMap[station.id];
-
-            return `
-              <h2>${stationData.address}</h2>
-              <p>Available bikes: ${stationData.bikes}</p>
-              <p>Empty slots: ${stationData.slots}</p>
-              <button onclick="pinStation(${stationData.id})">Pin</button>
-            `;
+            return getPopupContent(station);
           });
 
           return marker;
         });
+      }
+
+      function getPopupContent(station) {
+        const stationData = liveDataMap[station.id];
+
+        return `
+          <h2>${stationData.address}</h2>
+          <p>Available bikes: ${stationData.bikes}</p>
+          <p>Empty slots: ${stationData.slots}</p>
+          <button onclick="pinStation(${stationData.id})">Pin</button>
+        `;
       }
 
       function getIcon(stationData) {
