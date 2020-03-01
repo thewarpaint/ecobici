@@ -286,11 +286,19 @@
       }
 
       function getPinnedStation(stationId) {
-        return localStorage.getItem(pinnedStationIdKey);
+        try {
+          return localStorage.getItem(pinnedStationIdKey);
+        } catch (e) {
+          console.error(`Error while getting item from localstorage: ${e.message} ${e.stack}`);
+        }
       }
 
       function setPinnedStation(stationId) {
-        localStorage.setItem(pinnedStationIdKey, stationId);
+        try {
+          localStorage.setItem(pinnedStationIdKey, stationId);
+        } catch (e) {
+          console.error(`Error while setting item to localstorage: ${e.message} ${e.stack}`);
+        }
       }
     </script>
   </body>
