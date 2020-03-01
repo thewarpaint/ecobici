@@ -131,9 +131,8 @@
       const map = L.map('map').setView(mexicoCityCoords, 13);
 
       L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token=${mapboxAccessToken}`, {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-          '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-          'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, ' +
+          '<a href="https://www.mapbox.com/">Mapbox</a>',
         id: 'thewarpaint/ck78f69et08ww1is5ektgb138',
         maxZoom: 18,
         tileSize: 512,
