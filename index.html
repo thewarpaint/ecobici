@@ -110,6 +110,7 @@
       const pinnedZoom = 17;
       const pinnedStationIdKey = 'pinned_station_id';
       const mapboxAccessToken = 'pk.eyJ1IjoidGhld2FycGFpbnQiLCJhIjoiY2s3OGV5MjVmMDlkdTNsdGM3azlzNHdrbiJ9.8gyJ57hRghGNpNLL3IiZVQ';
+      const themeId = 'thewarpaint/ck78f69et08ww1is5ektgb138';
 
       const BikeIcon = L.Icon.extend({
         options: {
@@ -133,7 +134,7 @@
       L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token=${mapboxAccessToken}`, {
         attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, ' +
           '<a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'thewarpaint/ck78f69et08ww1is5ektgb138',
+        id: themeId,
         maxZoom: 18,
         tileSize: 512,
         zoomOffset: -1
