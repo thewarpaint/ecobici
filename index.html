@@ -166,13 +166,13 @@
             showCoverageOnHover: false,
           });
 
-          const markers = useLiveData
-            ? mapEcobiciStations(data)
-            : mapFeatureCollection(data);
+          const stationsMap = useLiveData
+            ? getMapFromEcobiciStations(data)
+            : getMapFromFeatureCollection(data);
 
-          markers.forEach((marker) => {
-            markerClusterGroup.addLayer(marker);
-          });
+          for (const stationId in stationsMap) {
+            markerClusterGroup.addLayer(stationsMap[stationId].marker);
+          }
 
           map.addLayer(markerClusterGroup);
 
@@ -203,35 +203,57 @@
         }, reloadInterval);
       }
 
-      function mapFeatureCollection(featureCollection) {
-        return featureCollection.features.map((feature) => {
-          const coordinates = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
-          const title = feature.properties.address;
-          const marker = L.marker(coordinates, {
-            title
-          });
+      function getMapFromFeatureCollection(featureCollection) {
+        return featureCollection.features.reduce((map, feature) => {
+          const marker = getMarkerFromFeature(feature);
 
-          marker.bindPopup(title);
+          map[feature.properties.id] = {
+            data: feature,
+            marker
+          };
 
-          return marker;
-        });
+          return map;
+        }, {});
       }
 
-      function mapEcobiciStations(stations) {
-        return stations.map((station) => {
-          const coordinates = L.latLng(station.lat, station.lon);
-
-          const marker = L.marker(coordinates, {
-            icon: getIcon(station),
-            title: station.address,
-          });
-
-          marker.bindPopup(() => {
-            return getPopupContent(station);
-          });
-
-          return marker;
+      function getMarkerFromFeature(feature) {
+        const coordinates = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+        const title = feature.properties.address;
+        const marker = L.marker(coordinates, {
+          title
         });
+
+        marker.bindPopup(title);
+
+        return marker;
+      }
+
+      function getMapFromEcobiciStations(stations) {
+        return stations.reduce((map, station) => {
+          const marker = getMarkerFromEcobiciStation(station);
+
+          map[station.id] = {
+            data: station,
+            marker
+          };
+
+          return map;
+        }, {});
+      }
+
+      function getMarkerFromEcobiciStation(station) {
+        const coordinates = L.latLng(station.lat, station.lon);
+
+        const marker = L.marker(coordinates, {
+          icon: getIcon(station),
+          title: station.address,
+        });
+
+        marker.bindPopup(() => {
+          return getPopupContent(station);
+        });
+
+        return marker;
       }
 
       function getPopupContent(station) {
