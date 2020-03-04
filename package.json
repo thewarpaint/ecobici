@@ -1,0 +1,19 @@
+{
+  "name": "ecobici",
+  "version": "0.0.1",
+  "description": "A better map for the Ecobici service in CDMX",
+  "dependencies": {
+    "puppeteer": "^2.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thewarpaint/ecobici.git"
+  },
+  "author": "Eduardo Garcia",
+  "bugs": {
+    "url": "https://github.com/thewarpaint/ecobici/issues"
+  },
+  "homepage": "https://github.com/thewarpaint/ecobici"
+}
