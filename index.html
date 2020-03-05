@@ -186,6 +186,8 @@
             } else {
               map.locate({ setView: true, maxZoom: pinnedZoom });
             }
+
+            document.body.classList.add('data-loaded');
           }
         });
 
