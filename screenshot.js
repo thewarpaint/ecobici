@@ -16,7 +16,7 @@ const pageSize = 640;
     waitUntil: 'networkidle0',
   });
 
-  await sleep(2500);
+  await page.waitForSelector('body.data-loaded');
 
   await page.screenshot({
     path: getScreenshotFilename(),
