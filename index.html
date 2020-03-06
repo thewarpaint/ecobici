@@ -121,11 +121,62 @@
       .circle-icon--yellow {
         background-color: #f79531;
       }
+
+      .legend {
+        position: absolute;
+        left: .5rem;
+        bottom: .5rem;
+        color: white;
+        font-family: monospace;
+      }
+
+      .legend__list {
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
+      }
+
+      .legend__list-item {
+        margin: .5rem;
+      }
+
+      .legend__list-item .circle-icon {
+        vertical-align: middle;
+      }
     </style>
   </head>
 
   <body>
     <div id="map"></div>
+
+    <div
+      class="legend"
+    >
+      <ul
+        class="legend__list"
+      >
+        <li
+          class="legend__list-item"
+        >
+          <span class="circle-icon circle-icon--green"></span> 5 o más bicis
+        </li>
+        <li
+          class="legend__list-item"
+        >
+          <span class="circle-icon circle-icon--yellow"></span> menos de 5 bicis
+        </li>
+        <li
+          class="legend__list-item"
+        >
+          <span class="circle-icon circle-icon--red"></span> 0 bicis
+        </li>
+        <li
+          class="legend__list-item"
+        >
+          <span class="circle-icon circle-icon--gray"></span> no operativa
+        </li>
+      </ul>
+    </div>
 
     <script>
       const useLiveData = true;
