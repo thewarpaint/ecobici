@@ -97,6 +97,29 @@
       .marker-cluster div {
         color: white;
       }
+
+      .circle-icon {
+        display: block;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+      }
+
+      .circle-icon--gray {
+        background-color: #57595b;
+      }
+
+      .circle-icon--green {
+        background-color: #4ba84f;
+      }
+
+      .circle-icon--red {
+        background-color: #eb1b23;
+      }
+
+      .circle-icon--yellow {
+        background-color: #f79531;
+      }
     </style>
   </head>
 
@@ -120,11 +143,26 @@
         },
       });
 
+      const CircleIcon = L.DivIcon.extend({
+        options: {
+          iconSize: [14, 14],
+          iconAnchor: [7, 7],
+          popupAnchor: [0, -7],
+        },
+      });
+
       const icons = {
         gray: new BikeIcon({ iconUrl: 'gray.png' }),
         green: new BikeIcon({ iconUrl: 'green.png' }),
         red: new BikeIcon({ iconUrl: 'red.png' }),
         yellow: new BikeIcon({ iconUrl: 'yellow.png' }),
+      };
+
+      const circleIcons = {
+        gray: new CircleIcon({ className: 'circle-icon circle-icon--gray' }),
+        green: new CircleIcon({ className: 'circle-icon circle-icon--green' }),
+        red: new CircleIcon({ className: 'circle-icon circle-icon--red' }),
+        yellow: new CircleIcon({ className: 'circle-icon circle-icon--yellow' }),
       };
 
       let liveDataMap = {};
@@ -271,18 +309,18 @@
 
       function getIcon(stationData) {
         if (stationData.status === 'CLS') {
-          return icons.gray;
+          return circleIcons.gray;
         }
 
         if (stationData.bikes > 5) {
-          return icons.green;
+          return circleIcons.green;
         }
 
         if (stationData.bikes > 0) {
-          return icons.yellow;
+          return circleIcons.yellow;
         }
 
-        return icons.red;
+        return circleIcons.red;
       }
 
       function updateLiveDataMap(data) {
