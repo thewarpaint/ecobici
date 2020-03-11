@@ -260,6 +260,17 @@
         green: new CircleIcon({ className: 'circle-icon circle-icon--green' }),
         red: new CircleIcon({ className: 'circle-icon circle-icon--red' }),
         yellow: new CircleIcon({ className: 'circle-icon circle-icon--yellow' }),
+        100: new CircleIcon({ className: 'circle-icon circle-icon--100' }),
+        90: new CircleIcon({ className: 'circle-icon circle-icon--90' }),
+        80: new CircleIcon({ className: 'circle-icon circle-icon--80' }),
+        70: new CircleIcon({ className: 'circle-icon circle-icon--70' }),
+        60: new CircleIcon({ className: 'circle-icon circle-icon--60' }),
+        50: new CircleIcon({ className: 'circle-icon circle-icon--50' }),
+        40: new CircleIcon({ className: 'circle-icon circle-icon--40' }),
+        30: new CircleIcon({ className: 'circle-icon circle-icon--30' }),
+        20: new CircleIcon({ className: 'circle-icon circle-icon--20' }),
+        10: new CircleIcon({ className: 'circle-icon circle-icon--10' }),
+        0: new CircleIcon({ className: 'circle-icon circle-icon--0' }),
       };
 
       let liveDataMap = {};
@@ -382,7 +393,7 @@
         const coordinates = L.latLng(station.lat, station.lon);
 
         const marker = L.marker(coordinates, {
-          icon: getIcon(station),
+          icon: getGradientIcon(station),
           title: station.address,
         });
 
@@ -418,6 +429,16 @@
         }
 
         return circleIcons.red;
+      }
+
+      function getGradientIcon(stationData) {
+        const bikes = parseInt(stationData.bikes, 10);
+        const slots = parseInt(stationData.slots, 10);
+
+        const percentage = (bikes / (bikes + slots)) * 100;
+        const iconClass = Math.ceil(percentage / 10) * 10;
+
+        return circleIcons[iconClass];
       }
 
       function updateLiveDataMap(data) {
